@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # 🎨 Pixel Art Generator — LoRA Fine-Tuning Pipeline
 
@@ -382,17 +382,15 @@ phrases_to_remove = [
 
 **Before cleaning:**
 ```
-pixel_art, A pixelated cartoon-style illustration of a knight in 8-bit pixel art
+pixel_art, A pixelated cartoon-style illustration of a knight in 8-bit pixel art style with bold colors
 ```
 
 **After cleaning:**
 ```
-A of a knight in
+A of a knight in style with bold colors
 ```
-Wait — that's too aggressive. The script preserves meaningful content:
-```
-A colorful knight character in full plate armor with a red cape, standing heroically
-```
+
+> **Note:** The regex-based removal strips style-related words while preserving descriptive content like colors, composition, and subjects. The AI captioners generally produce rich enough descriptions that removing style keywords still leaves meaningful captions for training.
 
 ---
 
@@ -668,4 +666,4 @@ Total:                      ~5.9 GB  ✅ Fits in 6GB!
 *If this project helped you, consider giving it a ⭐!*
 
 </div>
-]]>
+
