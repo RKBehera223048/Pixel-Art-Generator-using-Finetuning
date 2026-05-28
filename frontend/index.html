@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIXEL_LORA — Pixel Art Generation Studio</title>
+  <meta name="description" content="Generate high-fidelity 16-bit pixel art using a locally fine-tuned Stable Diffusion LoRA model. Neo-Brutalist interface for the Pixel Art LoRA Pipeline." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ====== NAVBAR ====== -->
+  <header class="navbar" id="navbar">
+    <div class="navbar__logo font-headline">PIXEL_LORA</div>
+    <nav class="navbar__links">
+      <a href="#pipeline" class="active">Pipeline</a>
+      <a href="#studio-section">Generate</a>
+      <a href="#gallery-section">Gallery</a>
+    </nav>
+    <a href="#studio-section" class="navbar__cta brutal-border brutal-shadow brutal-shadow-hover">GENERATE ART</a>
+    <button class="navbar__mobile-toggle brutal-border" id="mobile-toggle" aria-label="Open navigation menu">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </header>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="mobile-nav" id="mobile-nav">
+    <button class="mobile-nav__close" id="mobile-close" aria-label="Close navigation menu">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <a href="#pipeline" class="mobile-nav-link">Pipeline</a>
+    <a href="#studio-section" class="mobile-nav-link">Generate</a>
+    <a href="#gallery-section" class="mobile-nav-link">Gallery</a>
+  </div>
+
+  <main>
+
+    <!-- ====== HERO ====== -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <h1 class="hero__title">
+            PIXEL<br />
+            <span>LORA</span>
+          </h1>
+          <p class="hero__tagline">
+            The ultimate brutalist pipeline for generating high-fidelity 16-bit pixel art via Low-Rank Adaptation on your local GPU.
+          </p>
+          <a href="#studio-section" class="hero__cta brutal-border brutal-shadow brutal-shadow-hover">
+            START GENERATING
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+        </div>
+        <div class="hero__marquee-wrap">
+          <div class="hero__marquee-decor-circle brutal-border"></div>
+          <div class="hero__marquee-decor-square brutal-border"></div>
+          <div class="hero__marquee-container brutal-border brutal-shadow">
+            <div class="marquee-track" id="marquee-track">
+              <!-- Populated by JS from gallery -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== PIPELINE / ARCHITECTURE ====== -->
+    <section class="pipeline" id="pipeline">
+      <div class="pipeline__inner">
+        <h2 class="pipeline__heading">The Architecture</h2>
+        <div class="bento-grid">
+
+          <!-- 01 DATASET PREP -->
+          <div class="bento-card brutal-card card-dataset">
+            <div class="bento-card__number">01</div>
+            <div>
+              <div class="bento-card__phase brutal-border">
+                <span class="material-symbols-outlined" style="font-size:1rem;">database</span>
+                Phase 01
+              </div>
+              <h3 class="bento-card__title">Dataset Prep</h3>
+              <p class="bento-card__desc">
+                Automated recursive crawling architecture fetching high-grade 16-bit sprite sheets. Image normalization utilizing Lanczos resampling for pristine edge preservation before tensor conversion.
+              </p>
+            </div>
+            <div class="bento-card__tags">
+              <span class="bento-tag brutal-border">Recursive Crawl</span>
+              <span class="bento-tag brutal-border">Lanczos Resizing</span>
+              <span class="bento-tag brutal-border">Auto-Captioning</span>
+            </div>
+          </div>
+
+          <!-- 02 LORA TRAINING -->
+          <div class="bento-card brutal-card card-training">
+            <div class="bento-card__number">02</div>
+            <div>
+              <div class="bento-card__phase brutal-border">
+                <span class="material-symbols-outlined" style="font-size:1rem;">model_training</span>
+                Phase 02
+              </div>
+              <h3 class="bento-card__title">LoRA Training</h3>
+              <p class="bento-card__desc">
+                Optimized for constrained hardware. Utilizing 8-bit AdamW optimizers and Gradient Checkpointing to achieve convergence on consumer-grade RTX 4050 GPUs.
+              </p>
+            </div>
+            <div class="card-training__code brutal-border">
+              <code>
+                &gt; train_lora.py \<br />
+                &nbsp;&nbsp;--optimizer="8bit_adamw" \<br />
+                &nbsp;&nbsp;--gradient_checkpointing \<br />
+                &nbsp;&nbsp;--lora_rank=16
+              </code>
+            </div>
+          </div>
+
+          <!-- 03 INFERENCE -->
+          <div class="bento-card brutal-card card-inference">
+            <div class="card-inference__text">
+              <div class="bento-card__phase brutal-border">
+                <span class="material-symbols-outlined" style="font-size:1rem;">psychology</span>
+                Phase 03
+              </div>
+              <h3 class="bento-card__title">Inference</h3>
+              <p class="bento-card__desc">
+                The trained LoRA weights perfectly map the
+                <code class="code-inline brutal-border">pixel_art</code>
+                trigger word into the latent space, forcing strong stylistic adherence across diverse subjects.
+              </p>
+            </div>
+            <div class="card-inference__images" id="inference-images">
+              <!-- Populated by JS from gallery -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== GENERATION STUDIO ====== -->
+    <section class="studio" id="studio-section">
+      <div class="studio__inner">
+        <h2 class="studio__heading">Generation Studio</h2>
+        <p class="studio__subheading">
+          Craft your prompt, tune the parameters, and generate pixel art locally on your GPU.
+        </p>
+        <div class="studio__grid">
+
+          <!-- Controls -->
+          <div class="studio__controls brutal-card">
+            <div>
+              <div class="studio__section-label">
+                <span class="material-symbols-outlined">edit_note</span>
+                Positive Prompt
+              </div>
+              <textarea
+                id="prompt-input"
+                class="studio__textarea"
+                placeholder="Describe your pixel art scene..."
+              >a pixel art of attention_to_detail, depicting a solitary knight in full plate armor with a red cape, standing on a mountain peak at sunset over a sea of clouds, 16-bit</textarea>
+            </div>
+
+            <div>
+              <div class="studio__section-label">
+                <span class="material-symbols-outlined">block</span>
+                Negative Prompt
+              </div>
+              <textarea
+                id="negative-prompt-input"
+                class="studio__textarea studio__textarea--negative"
+                placeholder="What to avoid..."
+              >ugly, blurry, photorealistic, 3d render, digital art</textarea>
+            </div>
+
+            <div>
+              <div class="studio__section-label">
+                <span class="material-symbols-outlined">tune</span>
+                Parameters
+              </div>
+              <div class="studio__sliders">
+                <div class="slider-group">
+                  <label>
+                    Steps
+                    <span id="steps-val">50</span>
+                  </label>
+                  <input type="range" id="steps-slider" min="10" max="150" value="50" step="5" />
+                </div>
+                <div class="slider-group">
+                  <label>
+                    Guidance
+                    <span id="guidance-val">9.0</span>
+                  </label>
+                  <input type="range" id="guidance-slider" min="1" max="20" value="9" step="0.5" />
+                </div>
+                <div class="slider-group">
+                  <label>
+                    Width
+                    <span id="width-val">512</span>
+                  </label>
+                  <input type="range" id="width-slider" min="256" max="1024" value="512" step="64" />
+                </div>
+                <div class="slider-group">
+                  <label>
+                    Height
+                    <span id="height-val">512</span>
+                  </label>
+                  <input type="range" id="height-slider" min="256" max="1024" value="512" step="64" />
+                </div>
+              </div>
+            </div>
+
+            <button
+              id="generate-btn"
+              class="studio__generate-btn brutal-border brutal-shadow brutal-shadow-hover"
+            >
+              <span class="material-symbols-outlined">auto_awesome</span>
+              Generate Artwork
+            </button>
+          </div>
+
+          <!-- Preview -->
+          <div class="studio__preview brutal-card">
+            <div class="studio__section-label">
+              <span class="material-symbols-outlined">image</span>
+              Output Preview
+            </div>
+
+            <div class="studio__preview-area" id="preview-area">
+              <div class="studio__preview-placeholder" id="preview-placeholder">
+                <span class="material-symbols-outlined">palette</span>
+                <p>Adjust your prompts and click<br /><strong>"Generate Artwork"</strong> to begin.</p>
+              </div>
+              <img id="preview-image" src="" alt="Generated pixel art" style="display:none;" />
+              <div class="loading-overlay" id="loading-overlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Generating...</div>
+              </div>
+            </div>
+
+            <div class="studio__meta" id="gen-meta">
+              <span id="meta-time"></span>
+              <span id="meta-size"></span>
+              <span id="meta-steps"></span>
+            </div>
+
+            <button
+              id="download-btn"
+              class="studio__download-btn brutal-border brutal-shadow brutal-shadow-hover"
+            >
+              <span class="material-symbols-outlined">download</span>
+              Download Image
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== GALLERY ====== -->
+    <section class="gallery" id="gallery-section">
+      <div class="gallery__inner">
+        <h2 class="gallery__heading">Gallery</h2>
+        <p class="gallery__subheading">All images generated by your finetuned model, newest first.</p>
+        <div class="gallery__grid" id="gallery-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== CTA ====== -->
+    <section class="cta" id="download">
+      <div class="cta__grid-bg"></div>
+      <div class="cta__inner">
+        <span class="material-symbols-outlined cta__icon">terminal</span>
+        <h2 class="cta__title">Ready to Compile?</h2>
+        <p class="cta__text brutal-border brutal-shadow">
+          Grab the full repository containing dataset crawlers, training configs, and inference scripts.
+        </p>
+        <a href="#studio-section" class="cta__btn brutal-border brutal-shadow-lg brutal-shadow-hover">
+          START CREATING
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="footer__logo">PIXEL_LORA</div>
+    <nav class="footer__links">
+      <a href="#pipeline">Pipeline</a>
+      <a href="#studio-section">Generate</a>
+      <a href="#gallery-section">Gallery</a>
+      <a href="#download">Scripts</a>
+    </nav>
+    <div class="footer__copy">©2024 PIXEL ART GENERATOR. FORM FOLLOWS FUNCTION.</div>
+  </footer>
+
+  <!-- ====== LIGHTBOX ====== -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightbox-close" aria-label="Close lightbox">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <img id="lightbox-img" src="" alt="Full size preview" />
+  </div>
+
+  <!-- ====== ERROR TOAST ====== -->
+  <div class="toast" id="error-toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

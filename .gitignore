@@ -1,0 +1,39 @@
+# ─── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ─── Virtual Environment ─────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ─── Environment & Secrets ───────────────────────────────────
+.env
+.env.*
+
+# ─── Model Weights & Checkpoints (too large for Git) ─────────
+outputs/
+stable-diffusion-v1-5-GGUF/
+
+# ─── Dataset Images (too large for Git) ──────────────────────
+raw_data/
+processed_data/
+processed_data_resized/
+
+# ─── IDE & OS ────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+Thumbs.db
+.DS_Store
+
+# ─── Scratch / Utility Scripts ───────────────────────────────
+scratch_nvapi.py
+list_models.py

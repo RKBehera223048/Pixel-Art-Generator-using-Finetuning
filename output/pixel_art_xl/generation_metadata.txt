@@ -1,0 +1,10 @@
+Model: nerijs/pixel-art-xl
+Base Model: stabilityai/stable-diffusion-xl-base-1.0
+Prompt: pixel art, a cozy medieval tavern interior with a roaring fireplace, wooden tables and chairs, pixel art style
+Negative Prompt: blurry, 3d render, photo, realistic, smooth, modern, ugly, deformed
+Steps: 25
+Guidance Scale: 7.5
+Resolution: 512x512
+Seed: 42
+Device: cuda
+Dtype: torch.float16
